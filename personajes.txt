@@ -12,3 +12,4 @@ Jerry,95,16,10
 Garfield,100,20,12
 Raven,115,18,14
 Starfire,100,29,9
+Pink P,100,18,13
