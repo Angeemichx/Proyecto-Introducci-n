@@ -49,3 +49,10 @@ class Entrenador:
 
     def __str__(self):
         return f"{self.nombre} / Puntaje: {self.puntaje} / Personaje activo: {self.activo.nombre}"
+    
+    #prueba de funcionamiento:
+if __name__ == "__main__":
+    p1 = Personaje("Coraje", 95, 22, 12)
+    p2 = Personaje("Bob", 140, 12, 20)
+    entrenador = Entrenador("Angélica", [p1, p2])
+    print(entrenador)
