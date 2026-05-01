@@ -137,20 +137,14 @@ class PantallaInicial:
         try:
             img = Image.open(ruta).resize((55, 55))
             foto = ImageTk.PhotoImage(img)
-            self.imagenes_personajes[p.nombre] = foto  # Guardar referencia
+            self.imagenes_personajes[p.nombre] = foto  #Guardar referencia
             tk.Label(frame_p, image=foto, bg=COLOR_FONDO).pack()
         except:
-            tk.Label(
-                frame_p, text="Batalla", font=("Georgia", 24), bg=COLOR_FONDO
-            ).pack()
+            tk.Label(frame_p, text="Batalla", font=("Georgia", 24), bg=COLOR_FONDO).pack()
 
         #Botón con el nombre del personaje, con lambda se guarda el nombre actual para pasarlo a _toggle_personaje sino, todos los botones pasarían el último nombre de la lista
         btn = tk.Button(
-            frame_p, text=p.nombre, font=("Georgia", 9),
-            bg="white", fg=COLOR_TEXTO, relief="solid",
-            bd=1, padx=4, pady=2,
-            command=lambda nombre=p.nombre: self._toggle_personaje(nombre)
-        )
+            frame_p, text=p.nombre, font=("Georgia", 9), bg="white", fg=COLOR_TEXTO, relief="solid", bd=1, padx=4, pady=2, command=lambda nombre=p.nombre: self._toggle_personaje(nombre))
         btn.pack()
 
         #Se guarda referencia del botón para poder cambiar su color
