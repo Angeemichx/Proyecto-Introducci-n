@@ -27,15 +27,23 @@ def ejecutar_turno(atacante, defensor):
 
 #En esta función los turnos se van alternando entre el jugador y el hollow, esto hasta que cualquier personaje activo caiga en ko.
 def ciclo_turno(jugador, hollow, turno_jugador=True):
-    print(f"Turno - Jugador activo: {jugador.activo.nombre} KO:{jugador.activo.ko} / Hollow activo: {hollow.activo.nombre} KO:{hollow.activo.ko}")
     if not jugador.tener_vivos() or not hollow.tener_vivos():
         return
     if jugador.activo.ko or hollow.activo.ko:
         return
+    
     if turno_jugador:
         ejecutar_turno(jugador, hollow)
+    # el hollow debe decidir de forma aleatoria si ataca o cambia de personaje, para ello se utiliza la biblioteca random:
     else:
-        ejecutar_turno(hollow, jugador)
+        decision = random.choice(["atacar", "cambiar"])
+        #si decide atacar, llama a la funcion siguiente_vivo para comprobar si tiene otro personaje, si no lo tiene, ataca con el unico que le queda. Si decide cambiar se llama a la función cambiar_activo y pone el siguiente personaje vivo.
+        if decision == "atacar":
+            siguiente = hollow.siguiente_vivo()
+            if siguiente is not None:
+                hollow.cambiar_activo(siguiente)
+        else:
+            ejecutar_turno(hollow, jugador)
     if jugador.activo.ko or hollow.activo.ko:
         return
     ciclo_turno(jugador, hollow, not turno_jugador)
