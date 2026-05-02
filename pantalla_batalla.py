@@ -81,8 +81,15 @@ class PantallaBatalla:
         try:
             img = Image.open(ruta).resize((100, 100))
             foto = ImageTk.PhotoImage(img)
-            self.imagenes[f"{lado}_{nombre}"] = foto
-            tk.Label(frame, image=foto, bg="black").pack(pady=5)
+            self.imagenes[f"{lado}_activo"] = foto
+            label = tk.Label(frame, image=self.imagenes[f"{lado}_activo"], bg="black")
+            label.pack(pady=5)
+
+            #debe guardarse la referencia del label según el lado del jugador o del hollow
+            if lado == "jugador":
+                self.label_img_jugador = label
+            else:
+                self.label_img_hollow = label
         except:
             tk.Label(frame, text="?", font=("Georgia", 40), bg="black").pack(pady=5)
 
@@ -100,6 +107,30 @@ class PantallaBatalla:
         self.label_nombre_hollow.config(text=self.hollow.activo.nombre)
         self.label_hp_hollow.config(
             text=f"HP: {self.hollow.activo.vida_actual}/{self.hollow.activo.vida_max}")
+    
+    #Actualizar la imagen del personaje cuando se realiza un cambio
+    def _actualizar_imagen_jugador(self):
+        ruta = os.path.join("imágenes", "personajes", f"{self.jugador.activo.nombre}.png")
+        try:
+            img = Image.open(ruta).resize((100,100))
+            foto = ImageTk.PhotoImage(img)
+            
+            #Guardar imagenes para que no se elimenen de la memoria
+            self.imagenes["jugador_activo"] = foto
+            self.label_img_jugador.config(image=self.imagenes["jugador_activo"])
+        except:
+            pass
+
+    #También se debe actualizar la imagen del hollow cuando decida cambiar de personaje
+    def _actualizar_imagen_hollow(self):
+        ruta = os.path.join("imágenes", "personajes", f"{self.hollow.activo.nombre}.png")
+        try:
+            img = Image.open(ruta).resize((100,100))
+            foto = ImageTk.PhotoImage(img)
+            self.imagenes[f"hollow_{self.jugador.activo.nombre}"] = foto
+            self.label_img_hollow.config(image=foto)
+        except:
+            pass
 
     #Si el jugador decide atacar
     def _atacar(self):
@@ -137,6 +168,7 @@ class PantallaBatalla:
             if siguiente is not None:
                 self.hollow.cambiar_activo(siguiente)
                 self._log(f"{self.hollow.nombre} cambió a {self.hollow.activo.nombre}")
+                self._actualizar_imagen_hollow()
         else:
             dmg = self.hollow.activo.ataque
             dmg_real = self.jugador.activo.recibir_dmg(dmg)
@@ -190,6 +222,7 @@ class PantallaBatalla:
             self.jugador.cambiar_activo(nuevo)
             self._log(f"Cambiaste a {nuevo.nombre}")
             self._actualizar_pantalla()
+            self._actualizar_imagen_jugador()
         ventana.destroy()  #Cierra la ventana emergente
 
     #Busca un personaje en la lista
