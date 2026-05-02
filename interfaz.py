@@ -172,9 +172,10 @@ class PantallaInicial:
         messagebox.showinfo(
             "Información:",
             "Disney's Epic Adventure\n\n"
-            "Proyecto 1 — Introducción a la Programación\n"
+            "Proyecto 1 — CE1101 Introducción a la Programación\n"
             "Tecnológico de Costa Rica\n\n"
-            "Profesor: Santiago Ramírez\n"
+            "Estudiante: Angélica Obregón Arguedas\n"
+            "Profesor: Santiago Gamboa Ramírez\n"
             "I Semestre 2026")
 
     #Al presionar iniciar se debe ejecutar

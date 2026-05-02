@@ -66,7 +66,7 @@ class PantallaBatalla:
         #Mostrar lo que va pasando en la batalla
         frame_log = tk.Frame(self.canvas, bg="black")
         self.canvas.create_window(400, 450, window=frame_log)
-        self.log = tk.Text(frame_log, width=60, height=5, font=("Georgia", 9), bg="#000000", fg="white", state="disabled", relief="flat")
+        self.log = tk.Text(frame_log, width=40, height=5, font=("Georgia", 9), bg="#000000", fg="white", state="disabled", relief="flat")
         self.log.pack()
 
         #Frame de botones para acciones
