@@ -20,6 +20,9 @@ class Juego:
         self.jugador = None
         self.pantalla_mapa = None
 
+        #Guardar los hollows que ya se derrotaron
+        self.hollows_derrotados = []
+
         #Arrancar con la pantalla inicial
         self.mostrar_pantalla_inicial()
     def _limpiar_pantalla(self, widgets):
@@ -44,7 +47,7 @@ class Juego:
 
     def mostrar_mapa(self):
         self._limpiar_pantalla(self.root.winfo_children())
-        self.pantalla_mapa = PantallaMapa(self.root, self.jugador, callback_batalla=self.iniciar_batalla)
+        self.pantalla_mapa = PantallaMapa(self.root, self.jugador, callback_batalla=self.iniciar_batalla, hollows_derrotados=self.hollows_derrotados)
 
     #Cuando el jugador hace click en batallar en el mapa se crea el equipo del hollow utilizando random
     def iniciar_batalla(self, nombre_hollow):
@@ -60,8 +63,9 @@ class Juego:
     #Cunado se termina la batalla dice el nombre del hollow derrotado o None si el jugador perdió
     def terminar_batalla(self, nombre_hollow):
         if nombre_hollow is not None: #significa que el jugador ganó
+            self.hollows_derrotados.append(nombre_hollow) #Guardar que ya se han derrotado otros hollows
             self._limpiar_pantalla(self.root.winfo_children())
-            self.pantalla_mapa = PantallaMapa(self.root, self.jugador, callback_batalla=self.iniciar_batalla)
+            self.pantalla_mapa = PantallaMapa(self.root, self.jugador, callback_batalla=self.iniciar_batalla, hollows_derrotados=self.hollows_derrotados)
             self.pantalla_mapa.hollow_derrotado(nombre_hollow)
         else:
 

@@ -15,7 +15,7 @@ HOLLOWS = [{"nombre": "Gargamel",  "mundo": "El Bosque Encantado"},
     {"nombre": "Úrsula",    "mundo": "Las Profundidades"},]
 
 class PantallaMapa:
-    def __init__(self, root, jugador, callback_batalla=None):
+    def __init__(self, root, jugador, callback_batalla=None, hollows_derrotados=None):
         #Se define al jugador como objeto Entrenador con sus datos
         self.root = root
         self.jugador = jugador
@@ -23,11 +23,11 @@ class PantallaMapa:
         self.root.geometry("800x650")
         self.root.configure(bg="#1a1a2e")  #Fondo oscuro para el mapa
         self.root.resizable(False, False)
-        self.callback_batalla = callback_batalla
+        self.callback_batalla = callback_batalla #Para pasar a la siguiente ventana
 
         #Guardar imágenes para que no las elimine Python de memoria
         self.imagenes_hollows = {}
-        self.hollows_derrotados = []  #Lista de hollows que ya fueron derrotados
+        self.hollows_derrotados = hollows_derrotados if hollows_derrotados is not None else [] #Lista de hollows que ya fueron derrotados, si ya hay una existente usarla
         self._construir_mapa()
 
     def _construir_mapa(self):
