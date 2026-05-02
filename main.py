@@ -53,13 +53,24 @@ class Juego:
     def iniciar_batalla(self, nombre_hollow):
         datos = leer_personajes("personajes.txt")
         todos = self._crear_personajes(datos, 0, [])
-        equipo_hollow = self._elegir_equipo_hollow(todos, [], 0)
+        nombres_jugador = self._nombres_equipo(self. jugador.personajes, 0, []) #Guarda los nombres del equipo del jugador para excluirlos
+        disponibles = self._filtrar_disponibles(todos, nombres_jugador, 0, [])
+        equipo_hollow = self._elegir_equipo_hollow(disponibles, [], 0)
+        hollow = Entrenador(nombre_hollow, equipo_hollow, es_hollow=True)
         hollow = Entrenador(nombre_hollow, equipo_hollow, es_hollow=True)
 
         #Limpiar pantalla y mostrar la batalla
         self._limpiar_pantalla(self.root.winfo_children())
         PantallaBatalla(self.root, self.jugador, hollow, nombre_hollow, callback_victoria=self.terminar_batalla)
 
+    def _filtrar_disponibles(self, todos, nombres_jugador , indice, resultado):
+        if indice == len(todos):
+            return resultado 
+        p = todos[indice]
+        if p.nombre not in nombres_jugador: 
+                resultado.append(p)
+        return self._filtrar_disponibles(todos, nombres_jugador, indice + 1, resultado)
+        
     #Cunado se termina la batalla dice el nombre del hollow derrotado o None si el jugador perdió
     def terminar_batalla(self, nombre_hollow):
         if nombre_hollow is not None: #significa que el jugador ganó

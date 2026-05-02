@@ -190,7 +190,7 @@ class PantallaInicial:
             return
         equipo = self._obtener_equipo(self.personajes_disponibles, 0, [])
         self.callback_iniciar(nombre, self.avatar_var.get(), equipo)
-        self._imprimir_equipo(equipo, 0)
+
 
     #Se filtra la lista completa de personajes para que queden solo con los seleccionados
     def _obtener_equipo(self, personajes, indice, resultado):
