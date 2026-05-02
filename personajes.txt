@@ -1,15 +1,15 @@
-Coraje,95,22,12
-Bellota,130,21,11
-Burbuja,90,15,8
-Bombón,100,25,10
-Patricio,120,22,13
-Bob,140,12,20
-Phineas,110,18,15
-Ferb,160,8,25
-Perry,105,19,13
-Tom,110,17,14
-Jerry,95,16,10
-Garfield,100,20,12
-Raven,115,18,14
-Starfire,100,29,9
-Pink P,100,18,13
+Coraje,95,32,12
+Bellota,130,31,11
+Burbuja,90,25,8
+Bombón,100,35,10
+Patricio,120,32,13
+Bob,140,22,20
+Phineas,110,28,15
+Ferb,160,18,25
+Perry,105,29,13
+Tom,110,27,14
+Jerry,95,26,10
+Garfield,100,30,12
+Raven,115,28,14
+Starfire,100,39,9
+Pink P,100,28,13
