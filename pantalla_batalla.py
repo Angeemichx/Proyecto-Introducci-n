@@ -116,8 +116,10 @@ class PantallaBatalla:
             foto = ImageTk.PhotoImage(img)
             
             #Guardar imagenes para que no se elimenen de la memoria
-            self.imagenes["jugador_activo"] = foto
-            self.label_img_jugador.config(image=self.imagenes["jugador_activo"])
+            self.imagenes[f"jugador_{self.jugador.activo.nombre}"] = foto
+            self.label_img_jugador.config(image=self.imagenes[f"jugador_{self.jugador.activo.nombre}"])
+            self.label_img_jugador.image = foto
+            self.root.update() 
         except:
             pass
 
@@ -127,8 +129,8 @@ class PantallaBatalla:
         try:
             img = Image.open(ruta).resize((100,100))
             foto = ImageTk.PhotoImage(img)
-            self.imagenes[f"hollow_{self.jugador.activo.nombre}"] = foto
-            self.label_img_hollow.config(image=foto)
+            self.imagenes[f"hollow_{self.hollow.activo.nombre}"] = foto
+            self.label_img_hollow.config(image=self.imagenes[f"hollow_{self.hollow.activo.nombre}"])
         except:
             pass
 
@@ -149,6 +151,7 @@ class PantallaBatalla:
             if siguiente is not None:
                 self.hollow.cambiar_activo(siguiente)
                 self._log(f"{self.hollow.nombre} envió a {self.hollow.activo.nombre}")
+                self._actualizar_imagen_hollow()
         self._actualizar_pantalla()
 
         #Verificar si el hollow perdió todos sus personajes
@@ -183,6 +186,7 @@ class PantallaBatalla:
                 if siguiente is not None:
                     self.jugador.cambiar_activo(siguiente)
                     self._log(f"Enviaste a {self.jugador.activo.nombre}")
+                    self._actualizar_imagen_jugador()
         self._actualizar_pantalla()
 
         #Verificar si el jugador perdió todos sus personajes
@@ -194,27 +198,38 @@ class PantallaBatalla:
         #Crear ventana emergente
         ventana = tk.Toplevel(self.root)
         ventana.title("Cambia tu personaje")
-        ventana.geometry("300x400")
+        ventana.geometry("300x600")
         ventana.configure(bg="#1a1a2e")
-        ventana.resizable(False, False)
+        ventana.resizable(False, True)
         tk.Label(ventana, text="Elige un personaje:", font=("Georgia", 13, "bold"), bg="#1a1a2e", fg="white").pack(pady=15)
-
-        # Mostrar personajes disponibles
-        self._construir_opciones_cambio(ventana, self.jugador.personajes, 0)
+        frame_scroll = tk.Frame(ventana, bg="#1a1a2e")
+        frame_scroll.pack(fill="both", expand=True)
+        scrollbar = tk.Scrollbar(frame_scroll)
+        scrollbar.pack(side="right", fill="y")
+        canvas_scroll = tk.Canvas(frame_scroll, bg="#1a1a2e", yscrollcommand=scrollbar.set)
+        canvas_scroll.pack(side="left", fill="both", expand=True)
+        scrollbar.config(command=canvas_scroll.yview)
+        frame_contenido = tk.Frame(canvas_scroll, bg="#1a1a2e")
+        canvas_scroll.create_window((0, 0), window=frame_contenido, anchor="nw")
+        self._construir_opciones_cambio(frame_contenido, ventana, self.jugador.personajes, 0) #mostrar personajes disponibles
+        
+     #Actualizar scroll cuando cambia el tamaño
+        frame_contenido.update_idletasks()
+        canvas_scroll.config(scrollregion=canvas_scroll.bbox("all"))
 
     #Construir los botones de cambio
-    def _construir_opciones_cambio(self, ventana, personajes, indice):
+    def _construir_opciones_cambio(self, frame, ventana, personajes, indice):
         if indice == len(personajes):
             return
         p = personajes[indice]
 
-        #No mostrar el personaje activo ni los que están en KO
+            #No mostrar el personaje activo ni los que están en KO
         if p != self.jugador.activo and not p.ko:
             estado = f"HP: {p.vida_actual}/{p.vida_max}"
-            tk.Button(ventana,text=f"{p.nombre} — {estado}", font=("Georgia", 11),bg="#4ECDC4", fg="white",relief="flat", padx=10, pady=5,cursor="hand2",command=lambda nombre=p.nombre: self._cambiar_personaje(nombre, ventana)).pack(pady=5)
+            tk.Button(frame,text=f"{p.nombre} — {estado}", font=("Georgia", 11),bg="#4ECDC4", fg="white",relief="flat", padx=10, pady=5,cursor="hand2",command=lambda nombre=p.nombre: self._cambiar_personaje(nombre, ventana)).pack(pady=5)
 
-        self._construir_opciones_cambio(ventana, personajes, indice + 1)
-    #Cambiar el personaje activo del jugador
+        self._construir_opciones_cambio(frame, ventana, personajes, indice + 1)
+        #Cambiar el personaje activo del jugador
     def _cambiar_personaje(self, nombre, ventana):
         #Buscar el personaje por su nombre
         nuevo = self._buscar_personaje(self.jugador.personajes, nombre, 0)

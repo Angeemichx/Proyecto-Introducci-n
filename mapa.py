@@ -31,6 +31,10 @@ class PantallaMapa:
         self._construir_mapa()
 
     def _construir_mapa(self):
+        #verificar si ya derrotó a todos y ganó
+        if len (self.hollows_derrotados) == 5:
+            self._pantalla_victoria()
+            return
         #Título del mapa
         tk.Label(self.root, text="Mapa del Reino Imaginario", font=("georgia", 22, "bold"), bg="#1a1a2e", fg="#FFE66D").pack(pady=(20, 5))
 
@@ -44,6 +48,16 @@ class PantallaMapa:
 
         #Se crean los botones de los hollows
         self._construir_hollows(frame_hollows, 0)
+
+    #Función para detectar que se llegó a la victoria
+    def _pantalla_victoria(self):
+        #colocar un fondo
+        self.root.configure(bg="#1a1a2e")
+        tk.Label(self.root, text="¡¡¡VICTORIA!!!", font=("Gerorgia", 36, "bold"), bg="#1a1a1e", fg="#FFE66D").pack(pady=(80, 10))
+        tk.Label(self.root, text=f"¡{self.jugador.nombre} ha derrotado a todos los Hollows!", font=("Georgia", 16), bg="#1a1a2e", fg="white").pack(pady=10)
+        tk.Label(self.root, text="Todos los personajes han sido salvados\ny las historias han sido restauradas.", font=("Georgia", 13, "italic"), bg="#1a1a2e", fg="#4ECDC4").pack(pady=10)
+        tk.Label(self.root, text=f"Puntaje final: {self.jugador.puntaje} personajes rescatados", font=("Georgia", 14, "bold"), bg="#1a1a2e", fg="#FF6B6B").pack(pady=20)
+        tk.Button(self.root, text="Volver a jugar", font=("Georgia", 14, "bold"), bg="#FF6B6B", fg="white", relief="flat", padx=20, pady=10,cursor="hand2", activebackground="#FF6B6B", activeforeground="white", command=lambda: self.callback_batalla(None)).pack(pady=20)
 
     def _construir_hollows(self, frame, indice):
         if indice == len(HOLLOWS): #Caso base

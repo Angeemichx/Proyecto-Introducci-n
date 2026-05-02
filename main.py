@@ -51,18 +51,35 @@ class Juego:
 
     #Cuando el jugador hace click en batallar en el mapa se crea el equipo del hollow utilizando random
     def iniciar_batalla(self, nombre_hollow):
+        #para que se reinicie al ganar una partida
+        if nombre_hollow is None:
+            self.jugador=None
+            self.hollows_derrotados =[]
+            self._limpiar_pantalla(self.root.winfo_children())
+            self.mostrar_pantalla_inicial()
+            return
+        self._restaurar_equipo(self.jugador.personajes, 0) #restaura la vida del equipo antes de crear el hollow
         datos = leer_personajes("personajes.txt")
         todos = self._crear_personajes(datos, 0, [])
         nombres_jugador = self._nombres_equipo(self. jugador.personajes, 0, []) #Guarda los nombres del equipo del jugador para excluirlos
         disponibles = self._filtrar_disponibles(todos, nombres_jugador, 0, [])
+        if len(disponibles)< 3:
+            disponibles=todos
         equipo_hollow = self._elegir_equipo_hollow(disponibles, [], 0)
-        hollow = Entrenador(nombre_hollow, equipo_hollow, es_hollow=True)
         hollow = Entrenador(nombre_hollow, equipo_hollow, es_hollow=True)
 
         #Limpiar pantalla y mostrar la batalla
         self._limpiar_pantalla(self.root.winfo_children())
         PantallaBatalla(self.root, self.jugador, hollow, nombre_hollow, callback_victoria=self.terminar_batalla)
+    
+    #Función para restaurar la vida de los personajes al terminar la batalla
+    def _restaurar_equipo(self, personajes, indice):
+        if indice == len(personajes):
+            return 
+        personajes[indice].restaurar()
+        self._restaurar_equipo(personajes, indice + 1)
 
+    #Permite que el hollow no tenga los mismos personajes que el jugador
     def _filtrar_disponibles(self, todos, nombres_jugador , indice, resultado):
         if indice == len(todos):
             return resultado 
@@ -77,7 +94,6 @@ class Juego:
             self.hollows_derrotados.append(nombre_hollow) #Guardar que ya se han derrotado otros hollows
             self._limpiar_pantalla(self.root.winfo_children())
             self.pantalla_mapa = PantallaMapa(self.root, self.jugador, callback_batalla=self.iniciar_batalla, hollows_derrotados=self.hollows_derrotados)
-            self.pantalla_mapa.hollow_derrotado(nombre_hollow)
         else:
 
             #Si el jugador perdió la batalla hay que volver al mapa, pero sin marcar la victoria
