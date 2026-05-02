@@ -60,17 +60,3 @@ def batalla(jugador, hollow):
 
     ciclo_turno(jugador, hollow)
     batalla(jugador, hollow)
-
-#prueba de que funciona:
-if __name__ == "__main__":
-    p1 = Personaje("Coraje", 95, 22, 12)
-    p2 = Personaje("Bob", 140, 12, 20)
-    h1 = Personaje("Raven", 115, 18, 14)
-    h2 = Personaje("Starfire", 100, 29, 9)
-
-    jugador = Entrenador("Angélica", [p1, p2])
-    hollow  = Entrenador("Hollow 1", [h1, h2], es_hollow=True)
-
-    batalla(jugador, hollow)
-    print(f"\nPuntaje - {jugador.nombre}: {jugador.puntaje} | {hollow.nombre}: {hollow.puntaje}")
-    

@@ -15,7 +15,7 @@ HOLLOWS = [{"nombre": "Gargamel",  "mundo": "El Bosque Encantado"},
     {"nombre": "Úrsula",    "mundo": "Las Profundidades"},]
 
 class PantallaMapa:
-    def __init__(self, root, jugador):
+    def __init__(self, root, jugador, callback_batalla=None):
         #Se define al jugador como objeto Entrenador con sus datos
         self.root = root
         self.jugador = jugador
@@ -23,6 +23,7 @@ class PantallaMapa:
         self.root.geometry("800x650")
         self.root.configure(bg="#1a1a2e")  #Fondo oscuro para el mapa
         self.root.resizable(False, False)
+        self.callback_batalla = callback_batalla
 
         #Guardar imágenes para que no las elimine Python de memoria
         self.imagenes_hollows = {}
@@ -93,7 +94,8 @@ class PantallaMapa:
         todos = self._crear_personajes_hollow(datos, 0, [])
         equipo_hollow = self._elegir_equipo_hollow(todos, [], 0)
         hollow = Entrenador(nombre_hollow, equipo_hollow, es_hollow=True)
-        print(f"Iniciando batalla contra {nombre_hollow}")
+        if self.callback_batalla:
+            self.callback_batalla(nombre_hollow)
 
         #El Hollow recibe 3 personajes aleatorios
     def _elegir_equipo_hollow(self, todos, elegidos, intentos):
@@ -134,15 +136,3 @@ class PantallaMapa:
             return
         widgets[0].destroy()
         self._limpiar_pantalla(self.root.winfo_children())
-
-
-#Prueba
-if __name__ == "__main__":
-    p1 = Personaje("Coraje", 95, 22, 12)
-    p2 = Personaje("Bob", 140, 12, 20)
-    p3 = Personaje("Phineas", 110, 18, 15)
-    jugador = Entrenador("Angélica", [p1, p2, p3])
-
-    root = tk.Tk()
-    app = PantallaMapa(root, jugador)
-    root.mainloop()

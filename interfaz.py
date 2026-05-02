@@ -21,12 +21,13 @@ FUENTE_TEXTO= ("GEORGIA", 11, "normal")
 FUENTE_BOTON= ("georgia", 12, "bold")
 
 class PantallaInicial:
-    def __init__(self, root):
+    def __init__(self, root, callback_iniciar=None):
         self.root = root
         self.root.title("Pantalla Inicial")
         self.root.geometry("800x750")
         self.root.configure(bg=COLOR_FONDO)
         self.root.resizable(False, False)
+        self.callback_iniciar = callback_iniciar 
 
     #cargar datos y convertirlos en objetos personaje
         datos=leer_personajes("personajes.txt")
@@ -174,8 +175,7 @@ class PantallaInicial:
             "Proyecto 1 — Introducción a la Programación\n"
             "Tecnológico de Costa Rica\n\n"
             "Profesor: Santiago Ramírez\n"
-            "I Semestre 2026"
-        )
+            "I Semestre 2026")
 
     #Al presionar iniciar se debe ejecutar
     def _iniciar(self):
@@ -189,16 +189,8 @@ class PantallaInicial:
             messagebox.showwarning("¡Espera!", "Debes seleccionar exactamente 3 personajes.")
             return
         equipo = self._obtener_equipo(self.personajes_disponibles, 0, [])
-        print(f"Jugador: {nombre} / Avatar: {self.avatar_var.get()}")
+        self.callback_iniciar(nombre, self.avatar_var.get(), equipo)
         self._imprimir_equipo(equipo, 0)
-
-    #Buscar personajes que correspondan a los seleccionados
-    def _imprimir_equipo(self, equipo, indice):
-        if indice == len (equipo):
-             return
-        print (equipo[indice]. nombre)
-        self._imprimir_equipo(equipo, indice +1)
-
 
     #Se filtra la lista completa de personajes para que queden solo con los seleccionados
     def _obtener_equipo(self, personajes, indice, resultado):

@@ -243,24 +243,3 @@ class PantallaBatalla:
             self._log(f"\n¡{self.hollow.nombre} ganó la batalla!")
             messagebox.showinfo("Derrota", f"{self.hollow.nombre} te derrotó...")
             self.callback_victoria(None)  # None indica derrota
-
-
-# Prueba
-if __name__ == "__main__":
-    from personaje_clase import Personaje
-
-    p1 = Personaje("Coraje", 95, 22, 12)
-    p2 = Personaje("Bob", 140, 12, 20)
-    p3 = Personaje("Phineas", 110, 18, 15)
-
-    h1 = Personaje("Raven", 115, 18, 14)
-    h2 = Personaje("Starfire", 100, 29, 9)
-    h3 = Personaje("Tom", 110, 17, 14)
-
-    jugador = Entrenador("Angélica", [p1, p2, p3])
-    hollow  = Entrenador("Jack", [h1, h2, h3], es_hollow=True)
-
-    root = tk.Tk()
-    root.geometry("800x650")
-    app = PantallaBatalla(root, jugador, hollow, "Jack", lambda n: print(f"Batalla terminada: {n}"))
-    root.mainloop()
