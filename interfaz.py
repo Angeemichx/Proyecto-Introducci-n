@@ -176,7 +176,8 @@ class PantallaInicial:
             "Tecnológico de Costa Rica\n\n"
             "Estudiante: Angélica Obregón Arguedas\n"
             "Profesor: Santiago Gamboa Ramírez\n"
-            "I Semestre 2026")
+            "I Semestre 2026"\n
+            "Version: 1.0.0")
 
     #Al presionar iniciar se debe ejecutar
     def _iniciar(self):
